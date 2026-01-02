@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://dashboard:dashboard123@postgres:5432/license_dashboard
+      RUST_LOG: info
+      HOST: 0.0.0.0
+      PORT: 3000
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: dashboard
+      POSTGRES_PASSWORD: dashboard123
+      POSTGRES_DB: license_dashboard
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
